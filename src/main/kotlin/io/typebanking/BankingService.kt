@@ -1,4 +1,4 @@
-package io.typebanking
+package io.typebanking.legacy
 
 import java.math.BigDecimal
 
@@ -22,4 +22,3 @@ class BankingService {
         account.balance -= amount
     }
 }
-

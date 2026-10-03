@@ -4,14 +4,18 @@
 
 ## เริ่มต้น
 
-ต้องมี JDK 21+ และ Gradle 8.10+ (หรือเพิ่ม Gradle Wrapper ของทีม) แล้วรัน:
+บน `main`/`module-11-arrow` ใช้ JDK 21 และ Gradle Wrapper ที่ให้ไว้แล้ว:
 
 ```bash
-gradle test
-git switch module-00-primitive-obsession
+./gradlew test
+./gradlew exerciseTest
 ```
 
 แต่ละ branch คือ **จุดเริ่มต้นของโมดูล**: มี production code ตั้งแต่บทก่อนหน้า, TODO ที่ต้องทำ, tests ที่บอกพฤติกรรมที่ต้องทำให้ผ่าน และ `docs/modules` สำหรับอ่านก่อนลงมือ. อย่าเปิด solution ระหว่างทำ; ใช้เฉลยหลัง facilitator debrief เท่านั้น.
+
+บท 11: `test` เป็น baseline ที่ผ่านแล้ว; `exerciseTest` ตั้งใจแดงจนเติม 4 TODO ใน `TransferPreview.kt`. อ่าน [Module 11 — Arrow](docs/modules/module-11-arrow.md). JDK 27 ที่ติดตั้งเป็น default ต้องเปลี่ยน Gradle JVM/JAVA_HOME เป็น JDK 21 ก่อนรัน Wrapper รุ่นนี้.
+
+Branches 00–10 เก็บ snapshots เดิมและยังไม่มี Wrapper/Arrow: ใช้ Gradle 8.10+ กับ JDK 21 เพื่อเรียนตามบท แล้วกลับมาที่ `module-11-arrow` เมื่อผ่านพื้นฐาน Option/Either.
 
 ## เส้นทาง
 
@@ -28,6 +32,7 @@ git switch module-00-primitive-obsession
 | 08 | `module-08-ddd` | aggregate/events/ubiquitous language |
 | 09 | `module-09-property-thinking` | invariant-oriented tests |
 | 10 | `module-10-option-either` | compose absence/failure |
+| 11 | `module-11-arrow` | Functor/Monad laws → Arrow Option/Either → Raise DSL |
 
 ดูภาพรวม branch ที่ [docs/BRANCH_MAP.md](docs/BRANCH_MAP.md), รูปแบบการเรียนที่ [docs/LEARNER_GUIDE.md](docs/LEARNER_GUIDE.md), และเอกสารสอนที่ `docs/modules/`.
 
@@ -42,4 +47,3 @@ git switch module-00-primitive-obsession
 ## Scripts
 
 `./scripts/check-branch.sh` แสดง branch และ command ถัดไป. `./scripts/reset-module.sh` คืนเฉพาะไฟล์ที่โมดูลประกาศไว้จาก branch ปัจจุบัน (คำสั่งนี้ทิ้งการแก้ไขไฟล์เป้าหมาย จึงให้ commit หรือ stash ก่อน).
-

@@ -1,5 +1,8 @@
 package io.typebanking
 
+import io.typebanking.legacy.Account
+import io.typebanking.legacy.BankingService
+
 import java.math.BigDecimal
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -11,4 +14,3 @@ class BankingServiceTest {
         assertEquals(BigDecimal("125"), account.balance)
     }
 }
-
