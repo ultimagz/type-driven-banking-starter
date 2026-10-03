@@ -2,6 +2,12 @@
 
 รีโปสำหรับผู้เรียนของคอร์สทีม 10–12 สัปดาห์ ใช้ Mini Banking System เดียวเพื่อเห็นการเปลี่ยนจาก primitive code เป็น domain model ที่ type ช่วยป้องกันข้อผิดพลาด
 
+## อ่านจากพื้นฐานก่อนเริ่มแบบฝึก
+
+ถ้ายังไม่รู้จักศัพท์ออกแบบ เริ่มที่ [Kotlin และวิธีใช้ repo](docs/GETTING_STARTED.md) แล้วตาม [สารบัญ 12 บท](docs/COURSE_INDEX.md) แต่ละบทอธิบายคำใหม่ด้วยตัวอย่างง่ายก่อนเชื่อมกับโค้ดธนาคาร มี before/after, แบบฝึกทีละขั้น, คำใบ้, homework และ checkpoint พร้อมเกณฑ์ผ่าน
+
+เปิด [ศัพท์กลาง](docs/GLOSSARY.md) เมื่อเจอคำไม่คุ้น, [คู่มือผู้เรียน](docs/LEARNER_GUIDE.md) สำหรับวิธีทำโจทย์/อ่าน test และ [คู่มือผู้สอน](docs/FACILITATOR_GUIDE.md) สำหรับแผน session/คำถาม/จุดที่มักสับสน เอกสารชุดนี้อยู่ทุก module branch แต่โค้ดยังเปลี่ยนตามบท ให้ checkout branch ให้ตรงโจทย์
+
 ## เริ่มต้น
 
 บน `main`/`module-11-arrow` ใช้ JDK 21 และ Gradle Wrapper ที่ให้ไว้แล้ว:
@@ -11,7 +17,7 @@
 ./gradlew exerciseTest
 ```
 
-แต่ละ branch คือ **จุดเริ่มต้นของโมดูล**: มี production code ตั้งแต่บทก่อนหน้า, TODO ที่ต้องทำ, tests ที่บอกพฤติกรรมที่ต้องทำให้ผ่าน และ `docs/modules` สำหรับอ่านก่อนลงมือ. อย่าเปิด solution ระหว่างทำ; ใช้เฉลยหลัง facilitator debrief เท่านั้น.
+แต่ละ branch คือ **จุดเริ่มต้นของโมดูล** มี skeleton/TODO และโค้ด checkpoint ให้เรียนตามโจทย์ บาง snapshots มีแนวคิดของบทหลังอยู่ก่อนแล้ว ให้โฟกัส exercise ของบทปัจจุบัน Tests ในบท 00–10 เป็นชุดตั้งต้น ไม่ได้ตรวจทุก requirement ต้องเพิ่ม tests ตามเอกสาร; บท 11 แยก baseline กับ acceptance suite ชัดเจน ใช้ solution หลังทำ checkpoint และอธิบายเหตุผลแล้ว
 
 บท 11: `test` เป็น baseline ที่ผ่านแล้ว; `exerciseTest` ตั้งใจแดงจนเติม 4 TODO ใน `TransferPreview.kt`. อ่าน [Module 11 — Arrow](docs/modules/module-11-arrow.md). JDK 27 ที่ติดตั้งเป็น default ต้องเปลี่ยน Gradle JVM/JAVA_HOME เป็น JDK 21 ก่อนรัน Wrapper รุ่นนี้.
 

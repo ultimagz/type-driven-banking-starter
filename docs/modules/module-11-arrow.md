@@ -1,7 +1,66 @@
 # Module 11 — เรียนพื้นฐานก่อนประยุกต์ Arrow
 
-Branch: `module-11-arrow` • prerequisite: Modules 03, 06, 07, 09, 10 • เวลา: 2 sessions × 90 นาที
-เป้าหมาย: อธิบายสิ่งที่ไลบรารีทำได้จากหลักการที่รู้แล้ว และใช้มันต่อ workflow เดิมโดยรักษา business rules
+ก่อนเรียน: เข้าใจผลสำเร็จ/ผิดจาก [บท 03](module-03-typed-errors.md), pure core จาก [บท 06](module-06-functional-core.md), boundary จาก [บท 07](module-07-clean-boundary.md), การทดสอบกฎจาก [บท 09](module-09-property-thinking.md) และ map/flatMap จาก [บท 10](module-10-option-either.md)
+หลังเรียน: อธิบาย Functor/Monad และสิ่งที่ไลบรารีทำได้จากหลักการที่รู้แล้ว ใช้ Arrow ต่อ workflow เดิมโดยรักษา business rules และตรวจ behavior ด้วย tests
+Branch: `module-11-arrow` • เวลา: 2 sessions × 90 นาที
+
+## เริ่มตรงนี้ถ้ายังไม่รู้จักไลบรารีหรือศัพท์ Functor/Monad
+
+ก่อนบทนี้ให้ trace Some/None และ Right/Left ด้วย `when` จาก [บท 10](module-10-option-either.md) ได้ก่อน
+หากอ่าน `(A) -> B`, `{ it + 1 }` หรือ `<E, A>` ยังไม่คล่อง ให้กลับ [บทเตรียม Kotlin](../GETTING_STARTED.md) แล้วทำตัวอย่างสองนาที ไม่ต้องเดาจากชื่ออังกฤษ
+
+**Library** คือโค้ดสำเร็จรูปที่ project เรียกใช้ เช่น Arrow ช่วยให้เราไม่ต้องดูแล implementations ของ Option/Either และ operators เอง
+**Dependency** คือสิ่งที่ project ต้องใช้เพื่อ compile/ทำงาน; เพิ่ม library ใน build.gradle.kts แล้ว Gradle ดาวน์โหลดมาให้ตาม version ที่ระบุ
+Gradle คือเครื่องมือ build/test, JDK คือชุดเครื่องมือ Java ที่ใช้กับ Kotlin/JVM, ส่วน Wrapper คือ scripts ที่เลือก Gradle รุ่นตรงกันให้ทุกคน
+ใน branch นี้ setup มีให้แล้ว งานผู้เรียนคือเข้าใจและใช้ APIs ไม่ใช่เริ่มจากค้นหา dependency ที่ไหนเอง
+
+**Functor** เป็นชื่อของ pattern “แปลงค่าข้างใน แต่ยังเก็บ context เดิม” พร้อมกฎของ map
+Context คือความหมายรอบค่า: Right(10) ไม่ใช่เลข 10 อย่างเดียว แต่บอกด้วยว่าสำเร็จ; None ไม่ใช่ค่าปลอมแต่บอกว่าไม่มีค่า
+**Monad** เป็นชื่อของ pattern “ต่อขั้นที่คืน context แบบเดียวกัน” พร้อม pure/flatMap และกฎการต่อ
+Pure ใน Monad laws คือการยกค่าธรรมดาเข้า success context เช่น Right(10); อย่าสับสนกับ pure function ที่ไม่มี side effect จากบท 06
+
+เมื่อเห็น `f` กับ `g` ในสูตร ให้แทนในหัวด้วยงานจริง: f=parse input, g=load account
+เมื่อเห็น `g(f(x))` อ่านว่า “ทำ f ก่อน แล้วเอาผลไปทำ g” ไม่ต้องรู้ category theory เพื่อใช้รูปแบบนี้
+คำว่า law เป็นกติกาของ operator ที่ช่วยให้ refactor ได้โดยไม่เปลี่ยนความหมาย ไม่ใช่ business rule เช่นยอดเงินต้องพอ
+
+### ทดลอง Arrow ด้วยตัวอย่างที่เล็กกว่าการโอนเงิน
+
+ตัวอย่างนี้แยกไว้ใน scratch file ของตน ชื่อไม่ซ้ำ helpers ใน production:
+
+```kotlin
+import arrow.core.Either
+import arrow.core.raise.either
+
+fun parsePositiveCount(raw: String): Either<String, Int> {
+    val count = raw.toIntOrNull() ?: return Either.Left("not an integer")
+    return if (count > 0) Either.Right(count) else Either.Left("must be positive")
+}
+
+fun countTimesTen(raw: String): Either<String, Int> =
+    parsePositiveCount(raw).map { count -> count * 10 }
+
+fun countTimesTenWithBind(raw: String): Either<String, Int> = either {
+    val count = parsePositiveCount(raw).bind()
+    count * 10
+}
+```
+
+Trace `"2"` → Right(2) → Right(20); trace `"oops"` → Left("not an integer") และไม่คูณต่อ
+String error ในตัวอย่างเล็กใช้ให้อ่าน syntax ได้ง่าย ส่วน workflow ธนาคารยังใช้ sealed PreviewError เพื่อบอกเหตุผลอย่างชัดเจน
+`either { ... }` คือ builder ที่สร้าง Either จาก block; `bind()` เป็น operation ที่ใช้ได้ใน scope นี้เพื่อรับ Right หรือหยุดเมื่อเจอ Left
+**DSL — Domain-Specific Language** ในที่นี้คือ API ที่จัดรูปการเขียนให้เหมาะกับงานหนึ่ง เช่น block สำหรับต่อ typed results ไม่ใช่ภาษาโปรแกรมใหม่
+มันทำให้เขียนขั้นตอนเหมือน Kotlin ตามลำดับได้ แต่ยังมี success/failure semantics ที่ต้องเข้าใจก่อน
+
+**Fold** คือการให้ function จัดการทุกแขนแล้วคืนค่าชนิดเดียว เช่น Some→Right(account), None→Left(SourceMissing)
+**MapLeft** คือการแปลงข้อมูล error side อย่างมีความหมาย เช่น ConstructionError→PreviewError.AmountInvalid ไม่ใช่เปลี่ยนด้วย cast
+**Fail-fast** คือหยุดที่ failure แรก ส่วน **error accumulation** คือสะสมหลาย errors ของ checks ที่ไม่พึ่งกัน เช่นแต่ละช่องใน form
+รายละเอียดทั้งหมดจะนำไปใช้กับ helpers จริงใน exercises ด้านล่าง
+
+### อ่านตัวอย่างโค้ดให้ถูกบริบท
+
+ตัวอย่าง `first()`, `second()` และ `summarize()` ในส่วน before/after ด้านล่างเป็นชื่อสมมติเพื่อแสดงรูปแบบ ไม่ใช่ functions ที่มีอยู่ใน repo
+เมื่อลงมือให้เปิด `arrowlesson/TransferPreview.kt` และใช้ helpers ของไฟล์นั้นตามขั้น parse → lookup → decide
+ครบทั้งสอง implementation แล้วใช้ tests ชุดเดียวกันตรวจ อย่าคิดว่าการใช้ library เปลี่ยนกฎจำนวนเงินหรือแก้ persistence ให้เอง
 
 ## 1. Concept สำหรับผู้สอน: จากสิ่งที่ทำเองไปสู่ไลบรารี
 
