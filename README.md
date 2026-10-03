@@ -2,16 +2,22 @@
 
 รีโปสำหรับผู้เรียนของคอร์สทีม 10–12 สัปดาห์ ใช้ Mini Banking System เดียวเพื่อเห็นการเปลี่ยนจาก primitive code เป็น domain model ที่ type ช่วยป้องกันข้อผิดพลาด
 
+## อ่านจากพื้นฐานก่อนเริ่มแบบฝึก
+
+ถ้ายังไม่รู้จักศัพท์ออกแบบ เริ่มที่ [Kotlin และวิธีใช้ repo](docs/GETTING_STARTED.md) แล้วตาม [สารบัญ 12 บท](docs/COURSE_INDEX.md) แต่ละบทอธิบายคำใหม่ด้วยตัวอย่างง่ายก่อนเชื่อมกับโค้ดธนาคาร มี before/after, แบบฝึกทีละขั้น, คำใบ้, homework และ checkpoint พร้อมเกณฑ์ผ่าน
+
+เปิด [ศัพท์กลาง](docs/GLOSSARY.md) เมื่อเจอคำไม่คุ้น, [คู่มือผู้เรียน](docs/LEARNER_GUIDE.md) สำหรับวิธีทำโจทย์/อ่าน test และ [คู่มือผู้สอน](docs/FACILITATOR_GUIDE.md) สำหรับแผน session/คำถาม/จุดที่มักสับสน เอกสารชุดนี้อยู่ทุก module branch แต่โค้ดยังเปลี่ยนตามบท ให้ checkout branch ให้ตรงโจทย์
+
 ## เริ่มต้น
 
-ต้องมี JDK 21+ และ Gradle 8.10+ (หรือเพิ่ม Gradle Wrapper ของทีม) แล้วรัน:
+ใช้ JDK 21 และ Gradle 8.10+ ที่รองรับ JDK นี้ สำหรับ snapshot บท 00–10 แล้วรัน:
 
 ```bash
 gradle test
 git switch module-00-primitive-obsession
 ```
 
-แต่ละ branch คือ **จุดเริ่มต้นของโมดูล**: มี production code ตั้งแต่บทก่อนหน้า, TODO ที่ต้องทำ, tests ที่บอกพฤติกรรมที่ต้องทำให้ผ่าน และ `docs/modules` สำหรับอ่านก่อนลงมือ. อย่าเปิด solution ระหว่างทำ; ใช้เฉลยหลัง facilitator debrief เท่านั้น.
+แต่ละ branch คือ **จุดเริ่มต้นของโมดูล** มี skeleton/TODO และโค้ด checkpoint ให้เรียนตามโจทย์ บาง snapshots มีแนวคิดของบทหลังอยู่ก่อนแล้ว ให้โฟกัส exercise ของบทปัจจุบัน Tests ในบท 00–10 เป็นชุดตั้งต้น ไม่ได้ตรวจทุก requirement ต้องเพิ่ม tests ตามเอกสาร; บท 11 แยก baseline กับ acceptance suite ชัดเจน ใช้ solution หลังทำ checkpoint และอธิบายเหตุผลแล้ว
 
 ## เส้นทาง
 
@@ -28,6 +34,7 @@ git switch module-00-primitive-obsession
 | 08 | `module-08-ddd` | aggregate/events/ubiquitous language |
 | 09 | `module-09-property-thinking` | invariant-oriented tests |
 | 10 | `module-10-option-either` | compose absence/failure |
+| 11 | `module-11-arrow` | พื้นฐาน Functor/Monad → ประยุกต์ Arrow |
 
 ดูภาพรวม branch ที่ [docs/BRANCH_MAP.md](docs/BRANCH_MAP.md), รูปแบบการเรียนที่ [docs/LEARNER_GUIDE.md](docs/LEARNER_GUIDE.md), และเอกสารสอนที่ `docs/modules/`.
 
